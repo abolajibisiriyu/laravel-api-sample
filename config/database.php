@@ -1,5 +1,7 @@
 <?php
 
+$dbopts = parse_url(getenv('DATABASE_URL'));
+
 return [
 
     /*
@@ -13,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'pgsql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -53,13 +55,25 @@ return [
             'engine' => null,
         ],
 
+//        'pgsql' => [
+//            'driver' => 'pgsql',
+//            'host' => env('DB_HOST', '127.0.0.1'),
+//            'port' => env('DB_PORT', '5432'),
+//            'database' => env('DB_DATABASE', 'forge'),
+//            'username' => env('DB_USERNAME', 'forge'),
+//            'password' => env('DB_PASSWORD', ''),
+//            'charset' => 'utf8',
+//            'prefix' => '',
+//            'schema' => 'public',
+//            'sslmode' => 'prefer',
+//        ],
         'pgsql' => [
             'driver' => 'pgsql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => $dbopts["host"],
+            'port' => $dbopts["port"],
+            'database' => ltrim($dbopts["path"],'/'),
+            'username' => $dbopts["user"],
+            'password' => $dbopts["pass"],
             'charset' => 'utf8',
             'prefix' => '',
             'schema' => 'public',
